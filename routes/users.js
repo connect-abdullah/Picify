@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import plm from "passport-local-mongoose";
+
 
 mongoose.connect("mongodb://localhost:27017/Pinterest")
 
@@ -9,8 +11,7 @@ const userSchema = new mongoose.Schema({
     unique : true
   },
   password : {
-    type : String,
-    required : true
+    type : String
   },
   posts : [{
     type : mongoose.Schema.Types.ObjectId,
@@ -24,10 +25,12 @@ const userSchema = new mongoose.Schema({
     required : true,
     unique : true
   },
-  fullName : {
+  fullname : {
     type : String,
     required : true,
   }
 });
+
+userSchema.plugin(plm);
 
 export default mongoose.model("User", userSchema);

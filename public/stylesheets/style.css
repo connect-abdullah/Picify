@@ -1,8 +1,131 @@
+/* styles.css */
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #262626;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-a {
-  color: #00B7FF;
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.logo img {
+  width: 40px;
+  margin: 0 auto;
+  display: block;
+}
+
+.welcome {
+  text-align: center;
+  font-size: 18px;
+  margin: 10px 0 5px;
+}
+
+.title {
+  text-align: center;
+  font-size: 22px;
+  margin: 5px 0 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  width: 95%;
+  padding: 10px;
+  border: 1px solid #F5F6F7;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #F5F6F7;
+}
+
+.forgot-password {
+  text-align: right;
+  font-size: 12px;
+  color: #0073e6;
+  text-decoration: none;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #e60023;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #c9001d;
+}
+
+.or {
+  text-align: center;
+  margin: 20px 0 10px;
+  font-size: 14px;
+  color: #888;
+}
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-btn {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.facebook {
+  background-color: #1877f2;
+  color: #fff;
+}
+
+.google {
+  background-color: #fff;
+  color: #555;
+  border: 1px solid #ddd;
+}
+
+.terms {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  margin: 15px 0;
+}
+
+.terms a {
+  color: #0073e6;
+  text-decoration: none;
+}
+
+.signup {
+  text-align: center;
+  font-size: 14px;
+  margin: 10px 0 0;
+}
+
+.signup a {
+  color: #e60023;
+  text-decoration: none;
 }
