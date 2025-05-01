@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinterest Profile</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+      crossorigin="anonymous"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/profile.css" />
+  </head>
+  <body
+    class="d-flex flex-column justify-content-center align-items-center"
+    style="min-height: 100vh; gap: 2rem"
+  >
+    <!-- Profile Card Section -->
+    <div
+      class="profile-card d-flex flex-column align-items-center bg-white text-center p-4 shadow-sm rounded-4"
+    >
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_BLi0Tz09OWsD63kOrop_PK_vpGo-4eR_tg&s"
+        alt="David Grant"
+        class="rounded-circle border border-4 border-light mb-3"
+        style="width: 150px; height: 150px; object-fit: cover"
+      />
+
+      <h2 class="profile-name fw-bold mb-1"><%= user.fullname %></h2>
+      <span class="passion text-muted mb-3"><%= user.username %></span>
+
+      <div class="d-flex justify-content-center gap-4 mb-4 flex-wrap">
+        <div class="stat d-flex align-items-center gap-1">
+          <i class="fa-regular fa-star text-warning"></i>
+          <span>-> <%= user.email %></span>
+        </div>
+      </div>
+
+      <a href="/logout" class="show-btn btn rounded-pill px-4 py-2">
+        Log Out
+      </a>
+
+      <div class="upload-container" style="text-align: center; margin: 20px;">
+        <form action="/upload" method="post" enctype="multipart/form-data" style="display: inline-block; border: 1px solid #ccc; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+          <input type="file" name="file" accept="*/*" style="margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; padding: 10px; width: 100%;"/>
+          <br>
+          <button type="submit" style="background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 10px 20px; cursor: pointer; font-size: 16px;">
+            Upload
+          </button>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="container mt-5">
+      <div class="row justify-content-center g-4">
+        <div class="col-md-4">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title 1</h5>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-md-4">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title 2</h5>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Add more cards here following the same pattern -->
+      </div>
+    </div>
+    
+</div>
+    </div>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+  </body>
+</html>

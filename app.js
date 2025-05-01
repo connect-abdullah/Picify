@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import expressSession from "express-session";
+import flash from "connect-flash";
 
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
@@ -19,6 +20,8 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(flash());
 
 app.use(expressSession({
   resave : false,
