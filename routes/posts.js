@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
-mongoose.connect("mongodb://localhost:27017/Pinterest")
+mongoose.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASS}@cluster0.6rgbrne.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`)
 
 const postSchema = new mongoose.Schema({
     postText : {
