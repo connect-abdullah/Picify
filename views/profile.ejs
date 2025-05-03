@@ -9,8 +9,6 @@
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
-      crossorigin="anonymous"
     />
 
     <!-- Font Awesome -->
@@ -21,75 +19,58 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/stylesheets/profile.css" />
+
   </head>
-  <body
-    class="d-flex flex-column justify-content-center align-items-center"
-    style="min-height: 100vh; gap: 2rem"
-  >
+  <body class="d-flex flex-column align-items-center py-4">
+
     <!-- Profile Card Section -->
-    <div
-      class="profile-card d-flex flex-column align-items-center bg-white text-center p-4 shadow-sm rounded-4"
-    >
+    <div class="profile-card shadow-sm text-center mb-5">
       <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_BLi0Tz09OWsD63kOrop_PK_vpGo-4eR_tg&s"
-        alt="David Grant"
+        src="/images/uploads/<%= user.dp %> "
+        alt="Profile"
         class="rounded-circle border border-4 border-light mb-3"
         style="width: 150px; height: 150px; object-fit: cover"
       />
-
-      <h2 class="profile-name fw-bold mb-1"><%= user.fullname %></h2>
-      <span class="passion text-muted mb-3"><%= user.username %></span>
+      <h2 class="fw-bold mb-1"><%= user.fullname %></h2>
+      <p class="text-muted mb-3">@<%= user.username %></p>
 
       <div class="d-flex justify-content-center gap-4 mb-4 flex-wrap">
-        <div class="stat d-flex align-items-center gap-1">
+        <div class="stat d-flex align-items-center gap-2">
           <i class="fa-regular fa-star text-warning"></i>
-          <span>-> <%= user.email %></span>
+          <span><%= user.email %></span>
         </div>
       </div>
 
-      <a href="/logout" class="show-btn btn rounded-pill px-4 py-2">
-        Log Out
-      </a>
+      <div class="d-flex justify-content-center gap-3 flex-wrap mb-3">
+        <a href="/feed" class="btn btn-outline-primary rounded-pill px-4">Feed</a>
+        <a href="/logout" class="btn btn-outline-danger rounded-pill px-4">Log Out</a>
+        <a href="/profile/edit" class="btn btn-outline-success rounded-pill px-4">Edit Profile</a>
+      </div>
+      
 
-      <div class="upload-container" style="text-align: center; margin: 20px;">
-        <form action="/upload" method="post" enctype="multipart/form-data" style="display: inline-block; border: 1px solid #ccc; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
-          <input type="file" name="file" accept="*/*" style="margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; padding: 10px; width: 100%;"/>
-          <br>
-          <button type="submit" style="background-color: #4CAF50; color: white; border: none; border-radius: 4px; padding: 10px 20px; cursor: pointer; font-size: 16px;">
-            Upload
-          </button>
+      <!-- Upload Form -->
+      <div class="upload-container mt-4">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+          <input type="file" name="file" accept="image/*" class="form-control mb-2" required />
+          <input type="text" name="filecaption" placeholder="Enter caption..." class="form-control mb-2" required />
+          <button type="submit" class="btn btn-success w-100">Upload</button>
         </form>
       </div>
     </div>
 
-
-    <div class="container mt-5">
-      <div class="row justify-content-center g-4">
-        <div class="col-md-4">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card title 1</h5>
-            </div>
+    <!-- Pinterest Style Feed -->
+    <div class="container">
+      <div class="masonry-grid">
+        <% user.posts.forEach(post => { %>
+          <div class="masonry-item">
+            <img src="/images/uploads/<%= post.image %>" alt="<%= post.postText %>">
+            <div class="caption"><%= post.postText %></div>
           </div>
-        </div>
-    
-        <div class="col-md-4">
-          <div class="card">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card title 2</h5>
-            </div>
-          </div>
-        </div>
-    
-        <!-- Add more cards here following the same pattern -->
+        <% }) %>
       </div>
     </div>
-    
-</div>
-    </div>
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

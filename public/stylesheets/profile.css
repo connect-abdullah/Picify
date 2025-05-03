@@ -1,113 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@500&display=swap');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  
-}
-
 body {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
   background-color: #262626;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.profile-card {
+  max-width: 400px;
+  background: white;
+  border-radius: 16px;
   padding: 2rem;
-  align-items: center;
-  justify-content: center;
-  color: #1C2B62;
-
-  @media(max-width: 768px) {
-    height: auto;
-  }
 }
 
-.profile-card {
-  box-shadow: 0 10px #E6EFFA;
-  padding: 40px;
-  max-width: 562px;
+.upload-container form {
   width: 100%;
-  border-radius: 25px;
-
-  @media(max-width: 768px) {
-    width: 90%;
-    margin: 50px auto;
-    flex-direction: column;
-  }
-
-  .image {
-    flex: 1;
-
-    img {
-      width: 114px;
-      height: 114px;
-      border: 11px solid #E6EFFA;
-    }
-  }
-
-  .card {
-    border: none;
-    padding-top: 20px;
-
-    h2 {
-      font-family: 'Merriweather', serif;
-      font-weight: 700;
-      font-size: 26px;
-    }
-
-    .passion {
-      margin-bottom: 20px;
-    }
-
-    .stats {
-      i {
-        margin-right: 5px;
-      }
-    }
-
-    p {
-      font-size: 1.12rem;
-      max-width: 320px;
-      width: 100%;
-    }
-
-    .show-btn {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 500;
-      font-size: 1rem;
-      color: #1C2B62;
-      max-width: 111px;
-      width: 100%;
-      background: none;
-      transition: 0.3s ease;
-
-      &:hover {
-        background-color: #C4CADF;
-      }
-    }
-  }
+  max-width: 400px;
 }
 
+/* Masonry Layout */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
 
-.profile-card {
-  max-width: 1200px;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
+.masonry-item {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-  &:hover {
-    transform: translateY(-5px);
-  }
+.masonry-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
 
-  .show-btn {
-    background-color: #f30d19;
-    color: black;
-    font-weight: 500;
-    transition: all 0.3s ease;
+.masonry-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+}
 
-    &:hover {
-      background-color: #f30d18b0;
-      color: black;
-    }
-  }
+.caption {
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  color: #555;
+  text-align: center;
 }
