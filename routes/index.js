@@ -35,8 +35,7 @@ router.get("/feed", isLoggedIn,async function (req, res, next) {
 router.get("/profile", isLoggedIn ,async (req, res, next) => {
   const user = await userModel.findOne({
     username : req.session.passport.user
-  }).populate("posts")
-  console.log(user);
+  }).populate("posts");
   res.render("profile", {user});
 });
 
@@ -61,20 +60,28 @@ router.post("/login", passport.authenticate("local", {
   failureFlash : true
 }))
 
-router.post("/upload", isLoggedIn, upload.single("file") , async function (req, res) {
-  if (!req.file) {
-    return res.status(404).send("No Files Uploaded !!!");
-  }
+router.post("/upload", isLoggedIn, upload.single("file"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(404).send("No Files Uploaded !!!");
+    }
 
-  const user = await userModel.findOne({username : req.session.passport.user});
-  const postData = await postModel.create({
-    image: req.file.filename,
-    postText : req.body.filecaption,
-    user : user._id
-  });
-  user.posts.push(postData._id);
-  await user.save();
-  res.redirect("/profile")
+    const user = await userModel.findOne({ username: req.session.passport.user });
+
+    // Create a post with the Cloudinary URL
+    const post = await postModel.create({
+      image: req.file.path,
+      postText: req.body.filecaption,
+      user: user._id
+    });
+
+    user.posts.push(post._id);
+    await user.save();
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    res.status(500).send("An error occurred while uploading the file.");
+  }
 });
 
 router.get("/logout", (req,res) => {
@@ -88,14 +95,79 @@ router.get("/profile/edit", isLoggedIn,(req,res) => {
   res.render("edit");
 })
 
-router.post("/profile/edit", isLoggedIn, upload.single("file"), async (req,res) => {
-  const user = await userModel.findOne({username : req.session.passport.user});
+router.post("/profile/edit", isLoggedIn, upload.single("file"), async (req, res) => {
+  try {
+    const user = await userModel.findOne({ username: req.session.passport.user });
 
-  user.fullname = req.body.fullname;
-  user.dp = req.file.filename;
-  await user.save();
-  res.redirect("/profile");
-})
+    user.fullname = req.body.fullname;
+
+    if (req.file) {
+      user.dp = req.file.path; 
+    }
+
+    await user.save();
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).send("Failed to update profile.");
+  }
+});
+
+router.post("/profile/delete/:postId", isLoggedIn, async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userName = req.session.passport.user;
+    
+    const user = await userModel.findOne({username : userName})
+    
+    const post = await postModel.findById(postId);
+
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+    
+    if (post.user.toString() !== user._id.toString()) {
+      return res.status(403).send("You are not authorized to delete this post");
+    }
+
+    await postModel.findByIdAndDelete(postId);
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    res.status(500).send("Failed to delete post.");
+  }
+});
+
+
+
+router.post("/like/:postId", isLoggedIn, async (req, res) => {
+  const userId = req.session.passport.user;
+  const postId = req.params.postId;
+
+  try {
+    const post = await postModel.findById(postId);
+
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+
+    const liked = post.likes.includes(userId);
+
+    if (liked) {
+      // If already liked, remove
+      post.likes.pull(userId);
+    } else {
+      // If not liked, add
+      post.likes.push(userId);
+    }
+
+    await post.save();
+    res.json({ likesCount: post.likes.length, liked: !liked });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Something went wrong");
+  }
+});
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {

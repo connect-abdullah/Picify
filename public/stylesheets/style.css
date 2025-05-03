@@ -136,3 +136,7 @@ input {
   text-transform: capitalize;
   margin: 7px 0;
 }
+
+.like-btn.liked {
+  color: red;
+}

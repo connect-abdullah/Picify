@@ -10,21 +10,24 @@
 
   <header>
     <h1>Pinterest</h1>
+    <a href="/profile" class="profile-btn">Go to Profile</a>
   </header>
 
   <div class="container">
     <% posts.forEach(post => { %>
-      <div class="box">
-        <a href="/images/uploads/<%= post.image %>">
-          <img src="/images/uploads/<%= post.image %>" alt="<%= post.postText %>" />
-        </a>
-        <div class="caption"><%= post.postText %></div>
-        <div class="author"><%= post.user.username %></div>
-      </div>
+        <div class="box">
+            <a href="<%= post.image %>">
+              <img src="<%= post.image %>" alt="<%= post.postText %>" />
+            </a>
+            <div class="caption"><%= post.postText %></div>
+            <div class="author"><%= post.user.username %></div>
+            <button class="like-btn" data-id="<%= post._id %>">❤️ Like (<span><%= post.likes.length %></span>)</button>
+          </div>          
     <% }) %>
   </div>
 
+  
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="/scripts/app.js"></script>
+  <script src="/scripts/feed.js"></script>
 </body>
 </html>

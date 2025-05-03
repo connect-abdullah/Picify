@@ -1,18 +1,24 @@
-import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
-import path from "path";
+import cloudinary from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import multer from 'multer';
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './public/images/uploads');  // Destination Folder for Uploads
-    },
-    filename: function (req, file, cb) {
-      const uniqueName = uuidv4(); // Generating a unqiue name for image
-      cb(null, uniqueName + path.extname(file.originalname)) 
-      // adding image extention too
-    }
-  })
-  
-const upload = multer({ storage: storage })
+import dotenv from 'dotenv';
+dotenv.config();
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary.v2, 
+  params: {
+    folder: 'uploads',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp']
+  }
+});
+
+const upload = multer({ storage: storage });
 
 export default upload;
