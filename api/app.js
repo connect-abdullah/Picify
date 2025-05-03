@@ -7,8 +7,8 @@ import logger from 'morgan';
 import expressSession from "express-session";
 import flash from "connect-flash";
 
-import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
+import indexRouter from '../routes/index.js';
+import usersRouter from '../routes/users.js';
 import passport from 'passport';
 
 
