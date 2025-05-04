@@ -28,9 +28,9 @@ app.use(flash());
 app.use(expressSession({
   resave : false,
   saveUninitialized : false,
-  secret : "abdullah2005",
+  secret : process.env.SECRET_KEY,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000 // Session duration (e.g., 1 day)
+    maxAge: 24 * 60 * 60 * 1000 
   }
 }))
 

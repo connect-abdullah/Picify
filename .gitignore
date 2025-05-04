@@ -2,3 +2,4 @@ public/images/uploads/
 
 node_modules/
 git push
+.env
