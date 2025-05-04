@@ -22,8 +22,7 @@ router.get("/login", function (req, res, next) {
 
 
 router.get("/feed", isLoggedIn,async function (req, res, next) {
-  const posts = await postModel.find().populate("user")
-  console.log(posts);
+  const posts = await postModel.find().populate("user");
 
   if (!posts.length) {
     return res.status(404).send("No posts found !!!");
@@ -161,7 +160,6 @@ router.post("/feed/like/:postId", isLoggedIn, async (req, res) => {
 
     await post.save();
     res.json({ likesCount: post.likes.length, liked: !liked });
-    
   } catch (err) {
     console.error(err);
     res.status(500).send("Something went wrong");

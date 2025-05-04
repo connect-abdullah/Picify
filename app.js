@@ -10,8 +10,6 @@ import flash from "connect-flash";
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import passport from 'passport';
-const MongoStore = require("connect-mongo");
-
 import dotenv from "dotenv";
 dotenv.config()
 
@@ -30,16 +28,10 @@ app.use(flash());
 app.use(expressSession({
   resave : false,
   saveUninitialized : false,
-  secret : process.env.SECRET_KEY,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URL, // Your MongoDB Atlas connection URI
-    ttl: 24 * 60 * 60, // = 1 day (optional)
-  }),
+  secret : "abdullah2005",
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-    sameSite: "lax", // important for some browsers
-    secure: process.env.NODE_ENV === "production", // true in production (only HTTPS)
-  },
+    maxAge: 24 * 60 * 60 * 1000 // Session duration (e.g., 1 day)
+  }
 }))
 
 app.use(passport.initialize());
@@ -51,7 +43,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.set('trust proxy', 1); // Enable proxy support
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
