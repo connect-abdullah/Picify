@@ -31,8 +31,11 @@ app.use(expressSession({
   saveUninitialized : false,
   secret : process.env.SECRET_KEY,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000 // Session duration (e.g., 1 day)
-  }
+    maxAge: 24 * 60 * 60 * 1000,  // 1 day
+    secure: process.env.NODE_ENV === 'production',  // Set to true in production
+    httpOnly: true,  // To prevent access to cookies via JavaScript
+    sameSite: 'strict',  // Restrict the cookie to same-site requests
+  }  
 }))
 
 app.use(passport.initialize());
@@ -44,7 +47,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+app.set('trust proxy', 1); // Enable proxy support
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
