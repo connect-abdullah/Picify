@@ -14,6 +14,7 @@
 - **Bootstrap 5** — Styling for the UI components
 - **Custom CSS** — Pinterest-style layout and design
 - **Sessions** — Session management with `express-session`
+- **Cloudinary** — For Image Hosting
 
 ---
 
