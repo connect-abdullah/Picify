@@ -11,6 +11,9 @@ import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import passport from 'passport';
 
+import dotenv from "dotenv";
+dotenv.config()
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,7 +29,10 @@ app.use(flash());
 app.use(expressSession({
   resave : false,
   saveUninitialized : false,
-  secret : "abdulah2005"
+  secret : process.env.SECRET_KEY,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000 // Session duration (e.g., 1 day)
+  }
 }))
 
 app.use(passport.initialize());

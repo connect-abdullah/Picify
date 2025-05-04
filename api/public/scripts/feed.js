@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
-          }
+          },
+          credentials: 'include'
         })
         .then(response => {
           if (!response.ok) throw new Error('Failed to like post');

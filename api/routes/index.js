@@ -161,6 +161,7 @@ router.post("/feed/like/:postId", isLoggedIn, async (req, res) => {
 
     await post.save();
     res.json({ likesCount: post.likes.length, liked: !liked });
+    
   } catch (err) {
     console.error(err);
     res.status(500).send("Something went wrong");

@@ -10,8 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const response = await fetch(`/profile/delete/${postId}`, {
           method: "POST", // Use POST method to send the request
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
+          credentials: 'include'
         });
 
         if (response.ok) {
