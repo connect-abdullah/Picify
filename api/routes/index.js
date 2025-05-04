@@ -138,7 +138,7 @@ router.post("/profile/delete/:postId", isLoggedIn, async (req, res) => {
   }
 });
 
-router.post("/like/:postId", isLoggedIn, async (req, res) => {
+router.post("/feed/like/:postId", isLoggedIn, async (req, res) => {
   const userId = req.session.passport.user;
   const postId = req.params.postId;
 

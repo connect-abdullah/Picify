@@ -60,10 +60,13 @@ body {
   border: none;
   font-size: 20px;
   color: #f44336;
-  display: none;
   cursor: pointer;
   z-index: 10;
+  
+  /* Hidden by default on desktop */
+  display: none;
 }
+
 
 .masonry-item:hover .delete-btn {
   display: block;
@@ -72,4 +75,28 @@ body {
 
 .masonry-item:hover img {
   opacity: 0.8; 
+}
+
+
+/* Show delete button ONLY on mobile (below 768px) */
+@media (max-width: 768px) {
+  .delete-btn {
+    display: block;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Remove hover effects on mobile */
+  .masonry-item:hover .delete-btn {
+    display: block; /* Keep it always visible on mobile */
+  }
+  
+  .masonry-item:hover img {
+    opacity: 1; /* Disable image dimming on mobile */
+  }
 }

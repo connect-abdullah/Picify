@@ -1,10 +1,9 @@
-// public/scripts/feed.js
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.like-btn').forEach(button => {
       button.addEventListener('click', function() {
         const postId = this.getAttribute('data-id');
   
-        fetch(`/like/${postId}`, {
+        fetch(`/feed/like/${postId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

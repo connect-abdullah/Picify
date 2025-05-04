@@ -1,68 +1,114 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: #262626;
-    font-family: "Gilroy", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #262626;
+  font-family: "Gilroy", sans-serif;
+}
+
+body {
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container styling */
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Heading */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #fff;
+  letter-spacing: 1.5px;
+  font-size: clamp(24px, 6vw, 32px); /* Improved responsive font sizing */
+}
+
+/* Form elements */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #fff;
+  font-size: clamp(16px, 4.5vw, 18px); /* Improved responsive font sizing */
+}
+
+input[type="text"],
+input[type="file"] {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #333;
+  color: #fff;
+  font-size: clamp(15px, 4.5vw, 16px); /* Improved responsive font sizing */
+  width: 100%; /* Ensure full width */
+}
+
+input[type="text"]:focus,
+input[type="file"]:focus {
+  outline: none;
+  background-color: #444;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #0fa131;
+  color: #000;
+  font-weight: bold;
+  font-size: clamp(16px, 5vw, 18px); /* Improved responsive font sizing */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px; /* Added some spacing */
+}
+
+button:hover {
+  background-color: #10dc40;
+}
+
+/* Improved mobile responsiveness */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
   }
   
   .form-container {
-    max-width: 500px;
-    margin: 10vh auto;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    color: #fff;
+    padding: 15px;
+    margin: 0 auto; /* Center the form */
+    width: 95%; /* Slightly reduce width on small screens */
   }
   
   h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #fff;
-    letter-spacing: 2px;
+    margin-bottom: 15px;
   }
   
   .form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
-  
-  label {
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #fff;
-  }
-  
+}
+
+/* Prevent zooming on mobile input focus */
+@media (max-width: 480px) {
   input[type="text"],
-  input[type="file"] {
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background-color: #333;
-    color: #fff;
-  }
-  
-  input[type="text"]:focus,
-  input[type="file"]:focus {
-    outline: none;
-    background-color: #444;
-  }
-  
+  input[type="file"],
   button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background-color: #0fa131;
-    color: #000;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 16px; /* Fixed font size to prevent zooming */
   }
-  
-  button:hover {
-    background-color: #10dc40;
-  }
-  
+}
