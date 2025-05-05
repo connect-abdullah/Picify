@@ -30,7 +30,18 @@ const userSchema = new mongoose.Schema({
   fullname : {
     type : String,
     required : true,
-  }
+  },
+  googleId : {
+    type : String
+  },
+  otp: {
+    type : String
+  },
+  otpExpires: {
+    type : Date,
+    default : Date.now()
+  },
+
 });
 
 userSchema.plugin(plm);

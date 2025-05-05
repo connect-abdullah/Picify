@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Picify</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Picify</title>
 
-  <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
-<body>
-  <div class="login-container">
-    <div class="login-card">
-      <div class="logo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" alt="Pinterest Logo">
-      </div>
-      <h2 class="title">Welcome to Picify</h2>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-card">
+        <div class="logo">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png"
+            alt="Pinterest Logo"
+          />
+        </div>
+        <h2 class="title">Welcome to Picify</h2>
 
-      <% if (error.length > 0) { %>
+        <% if (error.length > 0) { %>
         <p class="error"><%= error %></p>
-      <% } %>
-      
-      <form action="/login" method="post">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
+        <% } %>
 
-        <a href="/forgot" class="forgot-password">Forgot your password?</a>
-        <button type="submit" class="login-btn">Login</button>
-      </form>
-      <!-- <div class="or">OR</div>
-      <div class="social-login">
-        <button class="social-btn facebook">Continue with Facebook</button>
-        <button class="social-btn google">Continue with Google</button>
-      </div> -->
-      <p class="signup" >
-        Not on Picify yet? <a href="/">Sign Up</a>
-      </p>
+        <form action="/login" method="post">
+          <input type="text" name="username" placeholder="Username" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+
+          <a href="/forgot" class="forgot-password">Forgot your password?</a>
+          <button type="submit" class="login-btn">Login</button>
+        </form>
+        <div class="or">OR</div>
+        <div class="social-login">
+            <a href="/auth/google">
+                <button class="social-btn">
+                  <img src="https://cdn4.iconfinder.com/data/icons/logos-brands-7/512/google_logo-google_icongoogle-512.png" alt="Google Logo">
+                  Continue with Google
+                </button>
+              </a>
+        </div>
+        <p class="signup">Not on Picify yet? <a href="/">Sign Up</a></p>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

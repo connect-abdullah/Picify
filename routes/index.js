@@ -3,40 +3,76 @@ import mongoose from 'mongoose';
 import userModel from './users.js';
 import postModel from './posts.js';
 import passport from 'passport';
+const { authenticate } = passport;
 import upload from "./multer.js";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 
+import dotenv from 'dotenv';
+dotenv.config();
+
+// Passport Strategy
 import { Strategy as LocalStrategy } from 'passport-local';
 passport.use(new LocalStrategy(userModel.authenticate()));
 
+// Google Strategy
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+passport.use(new GoogleStrategy(
+  {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "/auth/google/callback",
+  },
+  async (accessToken,refreshToken,profile,done) => {
+    try {
+      let existingUser = await userModel.findOne({googleId: profile.id});
+
+      if(existingUser) {
+        return done(null, existingUser)
+      };
+
+      const newUser = new userModel({
+        username: profile.emails[0].value,
+        fullname: profile.displayName,
+        email: profile.emails[0].value,
+        googleId: profile.id,
+        dp: profile.photos[0].value,
+      });
+
+      const savedUser = await newUser.save();
+      done(null, savedUser);
+    } catch (err) {
+      done(err,null)
+    }
+  }
+))
 
 const router = express.Router();
+
+// Middleware 
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect("/login");
+  }
+}
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
+// Login and Register
 router.get("/login", function (req, res, next) {
   res.render("login",{error : req.flash("error")});
 });
 
-
-router.get("/feed", isLoggedIn,async function (req, res, next) {
-  const posts = await postModel.find().populate("user");
-
-  if (!posts.length) {
-    return res.status(404).send("No posts found !!!");
-  }
-
-  res.render("feed", {posts});
-});
-
-router.get("/profile", isLoggedIn ,async (req, res, next) => {
-  const user = await userModel.findOne({
-    username : req.session.passport.user
-  }).populate("posts");
-  res.render("profile", {user});
-});
+router.post("/login", passport.authenticate("local", {
+  successRedirect : "/profile",
+  failureRedirect : "/login",
+  failureFlash : true
+}))
 
 router.post("/register", (req,res) => {
   const userData = new userModel({
@@ -53,11 +89,35 @@ router.post("/register", (req,res) => {
   })
 })
 
-router.post("/login", passport.authenticate("local", {
-  successRedirect : "/profile",
+// Google Login
+router.get("/auth/google", 
+  passport.authenticate("google", {scope:["profile","email"]})
+)
+
+router.get("/auth/google/callback", passport.authenticate("google",{
   failureRedirect : "/login",
   failureFlash : true
-}))
+}),(req,res) => {
+  res.redirect("/profile")
+})
+
+// All Other Routes
+router.get("/feed", isLoggedIn,async function (req, res, next) {
+  const posts = await postModel.find().populate("user");
+
+  if (!posts.length) {
+    return res.status(404).send("No posts found !!!");
+  }
+
+  res.render("feed", {posts});
+});
+
+router.get("/profile", isLoggedIn ,async (req, res, next) => {
+  const user = await userModel.findOne({
+    username : req.session.passport.user
+  }).populate("posts");
+  res.render("profile", {user});
+});
 
 router.post("/upload", isLoggedIn, upload.single("file"), async (req, res) => {
   try {
@@ -99,6 +159,7 @@ router.post("/profile/edit", isLoggedIn, upload.single("file"), async (req, res)
     const user = await userModel.findOne({ username: req.session.passport.user });
 
     user.fullname = req.body.fullname;
+    user.username = req.body.username;
 
     if (req.file) {
       user.dp = req.file.path; 
@@ -166,12 +227,70 @@ router.post("/feed/like/:postId", isLoggedIn, async (req, res) => {
   }
 });
 
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
-    res.redirect("/login");
+// Forgot Password
+router.get("/forgot", (req,res) => {
+  res.render("forgot");
+})
+
+router.post("/forgot", async (req, res) => {
+  const user = await userModel.findOne({ email: req.body.email });
+
+  if (!user) {
+    req.flash("error", "Email not found");
+    return res.redirect("/forgot");
   }
-}
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
+
+  // Setting to Database
+  user.otp = otp;
+  user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+  await user.save();
+
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS
+    }
+  });
+
+  await transporter.sendMail({
+    to: user.email,
+    from: `"Picify Support" <${process.env.GMAIL_USER}>`,
+    subject: "Your OTP for password reset",
+    html: `<p>Your OTP is: <strong>${otp}</strong></p>`
+  });
+
+  res.render("enter-otp", { email: user.email, error: null });
+});
+
+router.post("/verify-otp", async (req, res) => {
+  const { email, otp, password } = req.body;
+
+  const user = await userModel.findOne({
+    email,
+    otp,
+    otpExpires: { $gt: Date.now() }
+  });
+
+  if (!user) {
+    return res.render("enter-otp", { email, error: "Invalid or expired OTP" });
+  }
+
+  await user.setPassword(password); // from passport-local-mongoose
+  user.otp = undefined;
+  user.otpExpires = undefined;
+  await user.save();
+
+  req.login(user, (err) => {
+    if (err) {
+      console.error(err);
+      return res.redirect("/login");
+    }
+    res.redirect("/profile");
+  });
+});
+
 
 export default router;

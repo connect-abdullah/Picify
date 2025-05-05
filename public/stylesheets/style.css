@@ -68,10 +68,12 @@ input {
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  transition: transform 0.5s ease;
 }
 
 .login-btn:hover {
-  background-color: #c9001d;
+  background-color: #a7061e;
+  transform: scale(1.025);
 }
 
 .or {
@@ -90,21 +92,27 @@ input {
 .social-btn {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  background-color: #cac3c4;
+  color: black;
+  border: none;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  text-decoration: underline;
+  transition: transform 0.5s ease;
+}
+.social-btn:hover {
+  background-color: #4cc830a7;
+  transform: scale(1.025);
 }
 
-.facebook {
-  background-color: #1877f2;
-  color: #fff;
-}
-
-.google {
-  background-color: #fff;
-  color: #555;
-  border: 1px solid #ddd;
+.social-btn > img {
+  width: 20px; 
+  height: 20px; 
+  margin-right: 8px;
 }
 
 .terms {
