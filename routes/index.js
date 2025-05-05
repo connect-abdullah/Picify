@@ -227,6 +227,53 @@ router.post("/feed/like/:postId", isLoggedIn, async (req, res) => {
   }
 });
 
+router.post("/feed/save/:id", isLoggedIn, async (req,res) => {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  const postID = req.params.id;
+
+  try {
+    const post = await postModel.findById(postID);
+    const saved = user.savedPost.includes(postID);
+
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+
+    if (saved) {
+      user.savedPost.pull(postID);
+    } else {
+      user.savedPost.push(postID);
+    }
+
+    await user.save();
+    res.json({ saved: !saved });
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+})
+
+router.get("/profile/saved", isLoggedIn, async (req,res) => {
+  const posts = await userModel.findOne({username: req.session.passport.user}).populate("savedPost");
+
+  if (!posts.savedPost.length) {
+    return res.status(404).send("No posts found !!!");
+  }
+
+  res.render("savedPost", {posts: posts.savedPost});
+})
+
+router.post("/profile/remove/:postId", isLoggedIn, async (req,res) => {
+  const postId = req.params.postId;
+
+  const user = await userModel.findOne({username: req.session.passport.user});
+
+  user.savedPost.pull(postId);
+  console.log(user.savedPost);
+  await user.save();
+  res.redirect('/profile/saved');
+})
+
 // Forgot Password
 router.get("/forgot", (req,res) => {
   res.render("forgot");

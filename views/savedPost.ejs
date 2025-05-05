@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Feed | Picify</title>
+  <title>Saved Posts | Picify</title>
   <link rel="stylesheet" href="/stylesheets/feed.css" />
 </head>
 <body>
 
   <header>
-    <h1>Picify</h1>
+    <h1>Saved Posts</h1>
     <a href="/profile" class="profile-btn">Go to Profile</a>
   </header>
 
@@ -23,7 +23,7 @@
             <div class="author"><%= post.user.username %></div>
             <div class="actions">
                 <button class="like-btn" data-id="<%= post._id %>">❤️ Like (<span><%= post.likes.length %></span>)</button>
-                <button class="save-btn" data-id="<%= post._id %>" onclick="savePost('<%= post._id %>')">💾 Save</button>
+                <button class="remove-btn" data-id="<%= post._id %>" onclick="removeSavedPost('<%= post._id %>')">❌ Remove</button>
             </div>
           </div>          
     <% }) %>
@@ -54,6 +54,25 @@
   alert('Error saving post.');
 });
 }
+
+function removeSavedPost(postId) {
+  fetch(`/profile/remove/${postId}`, {
+    method: 'POST'
+  })
+  .then(res => {
+    if (res.ok) {
+      // Optional: visually remove the post or reload
+      document.querySelector(`.remove-btn[data-id="${postId}"]`).closest('.box').remove();
+    } else {
+      alert('Failed to remove saved post.');
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Error removing post.');
+  });
+}
+
   </script>
   
 </body>

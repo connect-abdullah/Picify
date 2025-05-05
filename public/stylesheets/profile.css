@@ -100,3 +100,58 @@ body {
     opacity: 1; /* Disable image dimming on mobile */
   }
 }
+
+.d-flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.d-flex a.btn {
+  flex: 1 1 calc(45% - 1rem); /* Makes 2 in a row */
+  max-width: 200px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+/* Hover colors based on function */
+a.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: white;
+  border-color: #0d6efd;
+}
+
+a.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+
+a.btn-outline-success:hover {
+  background-color: #198754;
+  color: white;
+  border-color: #198754;
+}
+
+a.btn-outline-info {
+  color: #ec6a07;
+  border-color: #ec6a07;
+}
+a.btn-outline-info:hover {
+  background-color: #ec6a07;
+  color: white;
+  border-color: #ec6a07;
+}
+
+/* Responsive tweak for smaller screens */
+@media (max-width: 576px) {
+  .d-flex a.btn {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
